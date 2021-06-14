@@ -1,7 +1,8 @@
+import axios from 'axios';
 import * as React from 'react';
 import { Button, Col, Container, Form, ListGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { addNews } from './news/newsSlice';
+import { addNews, fetchTodo } from './news/newsSlice';
 import { getNews } from './news/selectors';
 import { News } from './news/types';
 
@@ -9,8 +10,6 @@ const App = () => {
   const news = useSelector(getNews);
 
   const dispatch = useDispatch();
-
-  console.log(news);
 
   const [headerValue, setHeaderValue] = React.useState('');
   const [bodyValue, setBodyValue] = React.useState('');
@@ -28,6 +27,7 @@ const App = () => {
       body: bodyValue
     };
     dispatch(addNews(newNews));
+    dispatch(fetchTodo(''));
     setBodyValue('');
     setHeaderValue('');
   };

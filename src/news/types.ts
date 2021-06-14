@@ -5,7 +5,9 @@ export type News = {
   date?: string;
 };
 
+export type Todo = { userId: number; id: number; title: string; completed: boolean };
+
 export type State = {
-  1: { news: News[] };
-  2: { todos: any[] };
+  news: { news: News[] };
+  todos: { todos: any[] };
 };
