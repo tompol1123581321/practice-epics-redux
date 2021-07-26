@@ -1,17 +1,41 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { combineEpics, createEpicMiddleware } from 'redux-observable';
-import { pingEpic } from './news/newsEpic';
-import { newSliceReducer, todoReducer } from './news/newsSlice';
-import { getTodoEpic } from './news/todoEpic';
+import {
+	combineReducers,
+	configureStore,
+} from "@reduxjs/toolkit"
+import {
+	combineEpics,
+	createEpicMiddleware,
+} from "redux-observable"
 
-const rootReducer = combineReducers({ news: newSliceReducer, todos: todoReducer });
-const epicMiddleware = createEpicMiddleware();
-const rootEpic = combineEpics(pingEpic, getTodoEpic);
+import {
+	initLoadEpic,
+	initEpicNews,
+	initEpicPriceList,
+	initEpicResCount,
+} from "./redux/appEpic"
+import { appSliceReducer, init } from "./redux/appSlice"
+import { newSliceReducer } from "./redux/newsSlice"
+import { priceListSliceReducer } from "./redux/priceListSlice"
+import { reservationsSliceReducer } from "./redux/reservationsSlice"
+
+const rootReducer = combineReducers({
+	app: appSliceReducer,
+	news: newSliceReducer,
+	reservations: reservationsSliceReducer,
+	priceList: priceListSliceReducer,
+})
+const epicMiddleware = createEpicMiddleware()
+const rootEpic = combineEpics(
+	initEpicResCount,
+	initEpicPriceList,
+	initEpicNews,
+	initLoadEpic
+)
 
 export const store = configureStore({
-  reducer: rootReducer,
-  devTools: true,
-  middleware: [epicMiddleware]
-});
+	reducer: rootReducer,
+	devTools: true,
+	middleware: [epicMiddleware],
+})
 
-epicMiddleware.run(rootEpic);
+epicMiddleware.run(rootEpic)
